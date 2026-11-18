@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 
 // Smooth 12-lobe Material Design 3 Scallop (Cookie) path in 0..100 coordinate space
 export const M3_SCALLOP_PATH =
@@ -9,13 +9,16 @@ export const M3_SCALLOP_PATH =
 export const M3_CLOVER_PATH =
   'M50 8 C66 8, 74 18, 70 30 C82 26, 92 34, 92 50 C92 66, 82 74, 70 70 C74 82, 66 92, 50 92 C34 92, 26 82, 30 70 C18 74, 8 66, 8 50 C8 34, 18 26, 30 30 C26 18, 34 8, 50 8 Z';
 
+const SCALLOP_MASK_DATA_URI = `url("data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='${M3_SCALLOP_PATH}' fill='black'/></svg>`
+)}")`;
+
 interface ScallopPfpProps {
   name: string;
   pfpUrl: string;
 }
 
 export function ScallopPfp({ name, pfpUrl }: ScallopPfpProps) {
-  const clipId = useId().replace(/:/g, '');
   const [imageError, setImageError] = useState(false);
 
   const initials = name
@@ -26,7 +29,15 @@ export function ScallopPfp({ name, pfpUrl }: ScallopPfpProps) {
     .join('');
 
   return (
-    <div className="relative flex flex-col items-center">
+    <div
+      className="relative flex flex-col items-center select-none"
+      style={{
+        WebkitTouchCallout: 'none',
+        WebkitUserSelect: 'none',
+        userSelect: 'none',
+      }}
+      onContextMenu={(event) => event.preventDefault()}
+    >
       <div className="relative h-48 w-48 sm:h-52 sm:w-52">
         {/* Soft rotating Material 3 Scallop halo */}
         <motion.svg
@@ -39,53 +50,37 @@ export function ScallopPfp({ name, pfpUrl }: ScallopPfpProps) {
           <path d={M3_SCALLOP_PATH} fill="currentColor" opacity="0.65" />
         </motion.svg>
 
-        {/* Read-only Scallop PFP with tactile M3 spring hover/tap motion */}
+        {/* Masked HTML img with pointer-events-none prevents Android long-press crash on SVG/data URIs */}
         <motion.div
           whileHover={{ scale: 1.04, rotate: 4 }}
           whileTap={{ scale: 0.96, rotate: -2 }}
           transition={{ type: 'spring', stiffness: 340, damping: 20 }}
-          className="relative h-full w-full"
+          className="relative h-full w-full touch-manipulation select-none"
+          style={{
+            WebkitTouchCallout: 'none',
+            WebkitMaskImage: SCALLOP_MASK_DATA_URI,
+            maskImage: SCALLOP_MASK_DATA_URI,
+            WebkitMaskSize: '100% 100%',
+            maskSize: '100% 100%',
+            WebkitMaskRepeat: 'no-repeat',
+            maskRepeat: 'no-repeat',
+          }}
         >
-          <svg
-            viewBox="0 0 100 100"
-            role="img"
-            aria-label={`${name} profile picture`}
-            className="h-full w-full drop-shadow-xs"
-          >
-            <defs>
-              <clipPath id={clipId}>
-                <path d={M3_SCALLOP_PATH} />
-              </clipPath>
-            </defs>
-
-            <path d={M3_SCALLOP_PATH} className="fill-[var(--md-sys-color-primary-container)]" />
-
+          <div className="flex h-full w-full items-center justify-center bg-[var(--md-sys-color-primary-container)]">
             {!imageError ? (
-              <image
-                href={pfpUrl}
-                x="0"
-                y="0"
-                width="100"
-                height="100"
-                preserveAspectRatio="xMidYMid slice"
-                clipPath={`url(#${clipId})`}
+              <img
+                src={pfpUrl}
+                alt={`${name} profile picture`}
+                draggable={false}
                 onError={() => setImageError(true)}
+                className="pointer-events-none h-full w-full select-none object-cover"
               />
             ) : (
-              <g clipPath={`url(#${clipId})`}>
-                <path d={M3_SCALLOP_PATH} className="fill-[var(--md-sys-color-primary-container)]" />
-                <text
-                  x="50"
-                  y="50"
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  className="font-display fill-[var(--md-sys-color-on-primary-container)] text-[22px] font-bold"
-                >
-                  {initials || 'YA'}
-                </text>
-              </g>
+              <span className="font-display text-4xl font-bold text-[var(--md-sys-color-on-primary-container)]">
+                {initials || 'YA'}
+              </span>
             )}
-          </svg>
+          </div>
         </motion.div>
       </div>
     </div>

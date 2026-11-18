@@ -12,8 +12,8 @@ export interface CardProfile {
 export const CARD_PROFILE: CardProfile = {
   name: 'Yuki Ayasawa',
   pfpUrl: pfpImage,
-  instagramUrl: 'https://instagram.com',
-  tiktokUrl: 'https://tiktok.com',
-  telegramUrl: 'https://t.me',
+  instagramUrl: 'https://www.instagram.com/ayasawa_yuki/',
+  tiktokUrl: 'https://www.tiktok.com/@ayasawa_yuki',
+  telegramUrl: 'https://t.me/Ayasawa_yuki',
   email: 'ayasawa.yuki@gmail.com',
 };
