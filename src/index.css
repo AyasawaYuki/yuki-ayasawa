@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Soft Dusty Blush Material Design 3 Tonal Palette */
+    --md-sys-color-surface: #fcf9f9;
+    --md-sys-color-surface-dim: #f4ecee;
+    --md-sys-color-surface-container-lowest: #ffffff;
+    --md-sys-color-surface-container-low: #f7f1f2;
+    --md-sys-color-surface-container: #f1e8ea;
+    --md-sys-color-surface-container-high: #ebe0e3;
+    --md-sys-color-surface-container-highest: #e4d7db;
+
+    --md-sys-color-primary: #855260;
+    --md-sys-color-primary-hover: #70424f;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #f2dfe4;
+    --md-sys-color-on-primary-container: #361c24;
+
+    --md-sys-color-secondary-container: #efe4e7;
+    --md-sys-color-on-secondary-container: #2d2226;
+
+    --md-sys-color-tertiary: #a87f8a;
+    --md-sys-color-tertiary-container: #f7eaee;
+
+    --md-sys-color-on-surface: #1f1a1c;
+    --md-sys-color-on-surface-variant: #5e5256;
+    --md-sys-color-outline: #8e7f84;
+    --md-sys-color-outline-variant: #e5d9dd;
+  }
+
+  html {
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: "Bricolage Grotesque", "Plus Jakarta Sans", sans-serif;
+    text-wrap: balance;
+  }
+
+  .font-mono-tabular {
+    font-family: "JetBrains Mono", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
